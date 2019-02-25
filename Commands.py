@@ -241,6 +241,7 @@ async def StaffContact(classCode, db):
 
     if len(rows) < 1:
         message += "No information found."
+        return False, message
     else:
         for row in rows:
             message += ("**Staff Name**: " + row[2] + " " + row[3] + ".\n")
@@ -249,5 +250,4 @@ async def StaffContact(classCode, db):
             message += ("**Staff Email**: " + row[6] + ".\n")
             message += ("**Staff Office**: " + row[7] + ".\n")
             message += "\n \n"
-
-    return message
+        return True, message
