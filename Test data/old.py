@@ -5,7 +5,7 @@ import re
 from hackerrank.HackerRankAPI import HackerRankAPI
 
 HACKERRANK_API_KEY = 'hackerrank|3491785-2301|18ff1e697a4f9435ceba9e9c87f01ad8d1bfc854'
-DISCORD_API_KEY = 'MzkxNjA3NzU4MzA0MDUxMjEw.DRbIug.4tznsaHXWRrruR1NnjWNwU4IIDY'
+DISCORD_API_KEY = 'MzYxNDI2NjMxNjIzMDQ5MjE2.D1D53w.zvCrlUmNIjEclBk74V_rFHe2YY0'
 
 compiler = HackerRankAPI(api_key = HACKERRANK_API_KEY)
 client = discord.Client()

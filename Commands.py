@@ -1,5 +1,5 @@
 import discord
-import requests
+# import requests
 import re
 import json
 import asyncio
@@ -178,8 +178,8 @@ async def compile(client, message, args, optional_inputs):
         if not len(message.attachments):
             return False, "No file detected in message. Are you sure you attached the code? :)"
         attachment_url = message.attachments[0]['url']
-        returned_file = requests.get(attachment_url)
-        source = returned_file.text
+        # returned_file = requests.get(attachment_url)
+        # source = returned_file.text
     elif args[0] == 'block':
         source = block
     else:
@@ -196,7 +196,9 @@ async def compile(client, message, args, optional_inputs):
             'testcases': json.dumps(inputs),
             'format': "json"}
     try:
-        response = requests.post(HACKERRANK_URL, data=params)
+        response = None
+        # requests.post(HACKERRANK_URL, data=params)
+        return
     except:
         return False, "Error: ```\nBad Request.```"
     if response.status_code != 200:
@@ -222,3 +224,30 @@ async def compile(client, message, args, optional_inputs):
 #######################################################################################################
 # END of compile
 #######################################################################################################
+
+
+#######################################################################################################
+# Command: staffContact
+# Arguments: N/A
+# Inputs: N/A
+# Description: Retrieves contact information of staff members based on channel and search terms. 
+#######################################################################################################
+async def StaffContact(classCode, db):
+    dbCursor = db.cursor()
+    dbCursor.execute("SELECT * FROM Staff_Contact WHERE CourseID=?", (classCode,))
+
+    rows = dbCursor.fetchall()
+    message = ""
+
+    if len(rows) < 1:
+        message += "No information found."
+    else:
+        for row in rows:
+            message += ("**Staff Name**: " + row[2] + " " + row[3] + ".\n")
+            message += ("**Staff Role**: " + row[4] + ".\n")
+            message += ("**Staff Number**: " + row[5] + ".\n")
+            message += ("**Staff Email**: " + row[6] + ".\n")
+            message += ("**Staff Office**: " + row[7] + ".\n")
+            message += "\n \n"
+
+    return message

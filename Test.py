@@ -1,7 +1,10 @@
-var1 = 'true'
-var2 = 'false'
+import sqlite3
 
-if any([x not in ['true', 'false'] for x in [var1, var2]]):
-    print('please enter true or false only')
-else:
-    print("yay")
+courseID = "2801ICT"
+database = sqlite3.connect('database.db')
+c = database.cursor()
+c.execute("SELECT * FROM Staff_Contact WHERE CourseID=?", (courseID,))
+rows = c.fetchall()
+
+for row in rows:
+    print(row)

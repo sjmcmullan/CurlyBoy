@@ -1,6 +1,6 @@
 import discord
 import asyncio
-import requests
+# import requests
 import re
 import time
 import Commands
@@ -17,7 +17,7 @@ database = sqlite3.connect('database.db')
 killcode = "".join([chr(x) for x in [randint(97, 122) for i in range(5)]])
 
 def log_to_file(content):
-    #nothing
+    #nothin
     return
 
 async def reminder_check():
@@ -63,12 +63,13 @@ async def on_member_join(member):
 
 @client.event
 async def on_message(message):
+    # await client.send_message(message.channel, "I heard you.")
     #pre message checking to save processing
-    # Stop bot checking its own messages
+    #Stop bot checking its own messages
     if message.author == client.user:
         return
     # Whitelist for testing, remove this for main version
-    if message.server.name not in ["Omega", "Testing", "Computer Science GC"]:
+    if message.server.name not in ["Omega", "Testing", "Computer Science GC", "asdasd"]:
         return
 
     # Is the message in the form of a command?
@@ -76,7 +77,7 @@ async def on_message(message):
 
     if not message_check:
         # Log message
-        log_to_file("[Server: {} | Channel: {}]: {}".format(message.server, message.channel, message.author, message.content))
+        # log_to_file("[Server: {} | Channel: {}]: {}".format(message.server, message.channel, message.author, message.content))
         return
 
     #defines message as `<command> {args1 args2 ... argsN}`<optional_inputs>
@@ -88,7 +89,7 @@ async def on_message(message):
     log_to_file("""Command received:\nCommand: {}Arguments: {}After: {}""".format(command, args, optional_inputs))
     roles = [x.name.lower() for x in message.author.roles if x.name.lower() != "@everyone"]
     if len(roles) == 0:
-         await flash_message(message.channel, "You do not have permission to commands.", 10)
+         await flash_message(message.channel, "You do not have permission to use commands.", 10)
          return
 
     if command == 'help':
@@ -109,10 +110,10 @@ async def on_message(message):
             await client.delete_message(message)
         return
 
-    if command == 'kys' and "big-ω" in roles:
-        if len(args) == 1 and args[0] == killcode:
-            await client.logout()
-            await client.close()
+    if command == 'kys' and "big-ω" in roles and "amin" in roles:
+        # if len(args) == 1 and args[0] == killcode:
+        await client.logout()
+        await client.close()
         return
 
     if command == 'remind':
@@ -148,7 +149,19 @@ async def on_message(message):
             await flash_message(message.channel, result, 20)
             await client.delete_message(message)
         return
+    
+    if command == "staffContact":
+        # Get the course code from the channel name.
+        courseCode = message.channel.name[:7]
+        # Make sure that this command is only being used in a course-specific channel.
+        if courseCode[4:7] != "ict":
+            await client.send_message(message.channel, "This message can only be used in course channels.")
+        # Search database and return query result.
+        else:
+            result = await Commands.StaffContact(courseCode.upper(), database)
+            await client.send_message(message.channel, result)
 
-    await flash_message(message.channel, "No command found or you do not have permission.", 5)
+
+    # await flash_message(message.channel, "No command found or you do not have permission.", 5)
 client.loop.create_task(reminder_check())
 client.run(DISCORD_API_KEY)
