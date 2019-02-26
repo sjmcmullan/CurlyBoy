@@ -110,7 +110,7 @@ async def on_message(message):
             await client.delete_message(message)
         return
 
-    if command == 'kys' and "big-ω" in roles and "amin" in roles:
+    if command == 'kys' and "big-ω" in roles or "amin" in roles:
          if len(args) == 1 and args[0] == killcode:
              await client.logout()
              await client.close()
@@ -165,15 +165,6 @@ async def on_message(message):
         else:
             await client.send_message(message.channel, "This message can only be used in course channels.")
         # If the "private" argument is used, send the information to the user directly. 
-        
-            
-            
-            
-    if command == "end":
-        await client.logout()
-        await client.close()
-        return
-
 
     # await flash_message(message.channel, "No command found or you do not have permission.", 5)
 client.loop.create_task(reminder_check())
