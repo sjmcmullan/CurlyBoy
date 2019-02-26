@@ -111,10 +111,10 @@ async def on_message(message):
         return
 
     if command == 'kys' and "big-ω" in roles and "amin" in roles:
-        # if len(args) == 1 and args[0] == killcode:
-        await client.logout()
-        await client.close()
-        return
+         if len(args) == 1 and args[0] == killcode:
+             await client.logout()
+             await client.close()
+             return
 
     if command == 'remind':
         success, result = await Commands.remind(client, message, database, args, optional_inputs)
@@ -154,12 +154,16 @@ async def on_message(message):
         # Get the course code from the channel name.
         courseCode = message.channel.name[:7]
         # Make sure that this command is only being used in a course-specific channel.
-        if courseCode[4:7] != "ict":
-            await client.send_message(message.channel, "This message can only be used in course channels.")
-        # Search database and return query result.
-        else:
+        if courseCode[:4].isdigit() and courseCode[4:7] in "icteng":
             result = await Commands.StaffContact(courseCode.upper(), database)
             await client.send_message(message.channel, result)
+        else:
+            await client.send_message(message.channel, "This message can only be used in course channels.")
+            
+    if command == "end":
+        await client.logout()
+        await client.close()
+        return
 
 
     # await flash_message(message.channel, "No command found or you do not have permission.", 5)

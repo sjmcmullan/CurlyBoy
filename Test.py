@@ -1,10 +1,2 @@
-import sqlite3
-
-courseID = "2801ICT"
-database = sqlite3.connect('database.db')
-c = database.cursor()
-c.execute("SELECT * FROM Staff_Contact WHERE CourseID=?", (courseID,))
-rows = c.fetchall()
-
-for row in rows:
-    print(row)
+str = "1234ict-2342342340-234jnsdjndf"
+print(str[:4].isdigit() and str[4:7] in "ict-eng-")
