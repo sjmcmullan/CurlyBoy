@@ -153,12 +153,21 @@ async def on_message(message):
     if command == "staffContact":
         # Get the course code from the channel name.
         courseCode = message.channel.name[:7]
+        
         # Make sure that this command is only being used in a course-specific channel.
         if courseCode[:4].isdigit() and courseCode[4:7] in "icteng":
             result = await Commands.StaffContact(courseCode.upper(), database)
-            await client.send_message(message.channel, result)
+            # If there are no arguments, post to the channel.
+            if len(args) < 1:
+                await client.send_message(message.channel, result)
+            elif len(args) == 1 and args[0] == "private":
+                await client.send_message(message.author, result)
         else:
             await client.send_message(message.channel, "This message can only be used in course channels.")
+        # If the "private" argument is used, send the information to the user directly. 
+        
+            
+            
             
     if command == "end":
         await client.logout()
